@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "typescript based library for making chess based applications developement easier",
   "main": "dist/index.js",
+  "files":[
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -b" 
