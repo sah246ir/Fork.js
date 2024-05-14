@@ -1,0 +1,22 @@
+{
+  "name": "fork.js",
+  "version": "1.0.0",
+  "description": "typescript based library for making chess based applications developement easier",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sah246ir/Fork.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sah246ir/Fork.js/issues"
+  },
+  "homepage": "https://github.com/sah246ir/Fork.js#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.11"
+  }
+}
