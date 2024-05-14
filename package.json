@@ -4,7 +4,8 @@
   "description": "typescript based library for making chess based applications developement easier",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b" 
   },
   "repository": {
     "type": "git",
