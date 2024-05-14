@@ -1,5 +1,5 @@
 {
-  "name": "fork.js",
+  "name": "node-fork.js",
   "version": "1.0.0",
   "description": "typescript based library for making chess based applications developement easier",
   "main": "dist/index.js",
