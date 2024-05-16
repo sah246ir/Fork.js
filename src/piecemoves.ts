@@ -172,4 +172,3 @@ function processCell(notation:ChessSquare, color: string, board:(CellType | Cell
     moves.push(notation); 
     return !piece;
 }
-
