@@ -107,4 +107,39 @@ export const fenChessCode: Record<string, string> = {
     'queen-black': 'q',
     'king-black': 'k',
     'pawn-black': 'p'
-};
+}; 
+
+export declare class Chess {
+    protected board: CellTypeMinimal[][]
+    protected checked_king: ChessSquare | ""
+    protected turn: PieceColor
+    captured: Piece[]
+    color: PieceColor | null
+    protected winner: PieceColor | "-1" | null
+    protected cancastle: Record<PieceColor,canCastleType>
+
+    constructor();
+    getCaptures(color: PieceColor): any 
+    createBoard(fen: string | undefined): void;
+    encodeBoard( ): string;
+    toggleMove( ): void;
+    protected postMoveTasks (piececolor:PieceColor):void; 
+    isCheck(color: PieceColor, board: FrontendBoard): ChessSquare | null;
+    isMate(color: PieceColor): boolean; 
+    updateResult(result: PieceColor | "-1" | null) 
+    getPieces(color: PieceColor, board: TypeofBoard)  
+    protected updateCastlingRights(color: PieceColor): void;
+    protected createBoardRow(cols: string, row: number): CellTypeMinimal[]  
+    getPieceMoves(square: ChessSquare, piece: Piece, board: FrontendBoard): ChessSquare[];
+    protected copyBoard(): FrontendBoard;
+    protected validateMove(from: ChessSquare, to: ChessSquare): boolean 
+    makeMove(from: ChessSquare, to: ChessSquare):boolean
+    }
+
+export declare class ChessFrontend extends Chess {
+    board: FrontendBoard;
+    highlighted: ChessSquare[];
+    selected: ChessSquare | "";
+
+    constructor(fenstring?: string); 
+}

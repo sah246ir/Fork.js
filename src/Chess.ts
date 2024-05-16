@@ -5,17 +5,17 @@ var Pieces = "RNBQKBNR";
 var colors: PieceColor[] = ["white", "black"];
 
 const initialboard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
-export class ChessGame {
-    board: CellTypeMinimal[][]
-    check: ChessSquare | ""
-    turn: PieceColor
+export class Chess {
+    protected board: CellTypeMinimal[][]
+    protected checked_king: ChessSquare | ""
+    protected turn: PieceColor
     captured: Piece[]
     color: PieceColor | null
-    winner: PieceColor | "-1" | null
-    cancastle: Record<PieceColor,canCastleType>
+    protected winner: PieceColor | "-1" | null
+    protected cancastle: Record<PieceColor,canCastleType>
     constructor(fenstring?: string) {
         this.board = []
-        this.check = ""
+        this.checked_king = ""
         this.turn = "white"
         this.captured = []
         this.color = null
@@ -32,7 +32,7 @@ export class ChessGame {
         }
         this.createBoard(fenstring)  
     }
-    protected createBoard(fen: string | undefined) {
+    createBoard(fen: string | undefined) {
         if(!fen) fen = initialboard 
         const [fenboard,turn] = fen.split(" ")
         const rows = fenboard.split("/");
@@ -45,7 +45,7 @@ export class ChessGame {
         this.board = Board; 
     }
 
-    parseBoard(){
+    encodeBoard(){
         let string = ""
         for(let row of this.board){
             let empty_places = 0
@@ -132,14 +132,14 @@ export class ChessGame {
     }
     protected postMoveTasks = (piececolor:PieceColor) => {
         let opposition: "white" | "black" = piececolor === "black" ? "white" : "black"
-        let check = this.checkKingThreat(opposition, this.board)
+        let check = this.isCheck(opposition, this.board)
         if (check.length > 0 && this.isMate(opposition)) return this.updateResult(this.turn)
-        if (check.length > 0) this.check = check
+        if (check.length > 0) this.checked_king = check
         this.updateCastlingRights(piececolor)
         
         return
     }
-    updateCastlingRights(color:PieceColor){
+    protected updateCastlingRights(color:PieceColor){
         let leftrook = parseNotation(color==="black"?"a8":"a1")
         let rightrook = parseNotation(color==="black"?"h8":"h1")
         let king = parseNotation(color==="black"?"e8":"e1")
@@ -170,7 +170,7 @@ export class ChessGame {
         }
         return moves
     }
-    validateMove(from: ChessSquare, to: ChessSquare): boolean {
+    protected validateMove(from: ChessSquare, to: ChessSquare): boolean {
         let [x, y] = parseNotation(from)
         let [i, j] = parseNotation(to)
         let piece = this.board[x][y].piece as Piece
@@ -181,7 +181,7 @@ export class ChessGame {
         let testboard = this.copyBoard()
         testboard[i][j].piece = piece
         testboard[x][y].piece = null
-        if (this.checkKingThreat(piece.color, testboard).length > 0) throw new Error(`The king is threatened`);
+        if (this.isCheck(piece.color, testboard).length > 0) throw new Error(`The king is threatened`);
         return true
     }
     makeMove(from: ChessSquare, to: ChessSquare) {
@@ -212,16 +212,13 @@ export class ChessGame {
             this.cancastle[piece.color].long = ""
         }
         this.postMoveTasks(piece.color)
-        this.toggleMove()
-        console.log(this.parseBoard())
+        this.toggleMove() 
         return true
-    }
-
+    } 
     protected copyBoard(): TypeofBoard {
         return JSON.parse(JSON.stringify(this.board))
-    }
-
-    checkKingThreat(color: PieceColor, board: TypeofBoard): ChessSquare | "" {
+    } 
+    isCheck(color: PieceColor, board: TypeofBoard): ChessSquare | "" {
         let threatees: ChessSquare[] = this.getPieces(color === "black" ? "white" : "black", board)
         for (let threat of threatees) {
             let [i, j] = parseNotation(threat)
@@ -236,9 +233,8 @@ export class ChessGame {
             }
         }
         return ""
-    }
-
-    protected isMate(color: "white" | "black") {
+    } 
+    isMate(color: "white" | "black") {
         let turn_pieces: ChessSquare[] = this.getPieces(color, this.board)
         for (let pos of turn_pieces) {
             let [x, y] = parseNotation(pos)
@@ -250,7 +246,7 @@ export class ChessGame {
                 let tmp = this.copyBoard()
                 tmp[i][j].piece = tmp[x][y].piece
                 tmp[x][y].piece = null
-                if (!this.checkKingThreat(color, tmp)) {
+                if (!this.isCheck(color, tmp)) {
                     return false
                 }
             }

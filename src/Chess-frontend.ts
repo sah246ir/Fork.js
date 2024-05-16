@@ -1,10 +1,10 @@
-import { ChessGame } from "./Chess";
+import { Chess } from "./Chess";
 import { CellType,ChessSquare, FrontendBoard, Piece, PieceColor } from "./chessTypes"; 
 import { chessPiecesMoves } from "./piecemoves";
 import { parseNotation } from "./utils";  
 
 const initialboard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
-export class ChessFrontend extends ChessGame { 
+export class ChessFrontend extends Chess { 
     board: FrontendBoard;
     highlighted: ChessSquare[]
     selected: ChessSquare | ""
@@ -42,7 +42,7 @@ export class ChessFrontend extends ChessGame {
         this.unsetSelected()
         this.unhighlightMoves()
         let opposition:"white"|"black" = piececolor=== "black" ? "white" : "black"
-        let check = this.checkKingThreat(opposition, this.board ) 
+        let check = this.isCheck(opposition, this.board ) 
         if(check){
             let[x,y] = parseNotation(check)
             this.board[x][y].highlight = true
@@ -52,15 +52,17 @@ export class ChessFrontend extends ChessGame {
         return
     } 
      
-    setSelected(notation: ChessSquare) {
+    protected setSelected(notation: ChessSquare) {
         if (this.color && this.color !== this.turn) return
+        this.highlightMoves(notation,this.board)
         this.selected = notation
         let [i, j] = parseNotation(notation)
         this.board[i][j].highlight = true
         this.board[i][j].selected = true
     }
-    unsetSelected() {
+    protected unsetSelected() {
         if (!this.selected) return
+        this.unhighlightMoves()
         const [i, j] = parseNotation(this.selected)
         this.board[i][j].highlight = false
         this.board[i][j].selected = false
@@ -68,7 +70,7 @@ export class ChessFrontend extends ChessGame {
     }
 
      
-    highlightMoves = (notation: ChessSquare, board: CellType[][]) => {
+    protected highlightMoves = (notation: ChessSquare, board: CellType[][]) => {
         let [m,n] = parseNotation(notation)
         let cell:CellType = board[m][n]
         if (!this.selected) return
@@ -81,7 +83,7 @@ export class ChessFrontend extends ChessGame {
             let tmp = this.copyBoard() as CellType[][]
             tmp[i][j].piece = tmp[x][y].piece
             tmp[x][y].piece = null
-            let c = !this.checkKingThreat(piece.color, tmp)  
+            let c = !this.isCheck(piece.color, tmp)  
             return c
         }) 
         moves.forEach((notation) => {
@@ -90,7 +92,7 @@ export class ChessFrontend extends ChessGame {
         })
         this.highlighted = moves 
     }
-    unhighlightMoves = () => {
+    protected unhighlightMoves = () => {
         this.highlighted.forEach((notation) => {
             let [mi, mj] = parseNotation(notation)
             this.board[mi][mj].highlight = false
