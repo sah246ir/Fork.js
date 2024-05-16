@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "typescript based library for making chess based applications developement easier",
   "main": "dist/index.js",
-  "files":[
+  "types": "src/chessTypes.d.ts",
+  "files": [
     "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -b" 
+    "build": "tsc -b"
   },
   "repository": {
     "type": "git",
