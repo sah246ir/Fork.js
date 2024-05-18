@@ -1,5 +1,4 @@
-// piecemoves.d.ts
-
+// piecemoves.d.ts 
 export type castlingType = "long"|"short"
 export type TypeofBoard = CellTypeMinimal[][] | CellType[][]
 export type FrontendBoard = CellType[][]
@@ -18,14 +17,8 @@ export type ChessSquare = "a1" | "a2" | "a3" | "a4" | "a5" | "a6" | "a7" | "a8" 
     "f1" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" |
     "g1" | "g2" | "g3" | "g4" | "g5" | "g6" | "g7" | "g8" |
     "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "h7" | "h8";
-export const chessPieces: Record<string, PieceType> = {
-    'R': 'rook',
-    'N': 'knight',
-    'B': 'bishop',
-    'Q': 'queen',
-    'K': 'king',
-    'P': 'pawn'
-};
+
+export type chessPiecesType = Record<string, PieceType> 
 export interface Piece {
     name: PieceType;
     color: "white" | "black";
@@ -65,49 +58,14 @@ export interface MoveFunction {
     (notation: ChessSquare, color: string, board: (CellType | CellTypeMinimal)[][]): ChessSquare[];
 }
 
-export const piecePoints: Record<PieceType, number> = {
-    'rook': 5,
-    'knight': 3,
-    'bishop': 3,
-    'queen': 8,
-    'king': 0,
-    'pawn': 1
-}; 
+
 export type Moves = (ChessSquare)[] 
 
 export type PieceColor = "white" | "black"
 
-export const fenChessPieces: Record<string, { name: string, color: string }> = {
-    'R': { name: 'rook', color: 'white' },
-    'N': { name: 'knight', color: 'white' },
-    'B': { name: 'bishop', color: 'white' },
-    'Q': { name: 'queen', color: 'white' },
-    'K': { name: 'king', color: 'white' },
-    'P': { name: 'pawn', color: 'white' },
-
-    'r': { name: 'rook', color: 'black' },
-    'n': { name: 'knight', color: 'black' },
-    'b': { name: 'bishop', color: 'black' },
-    'q': { name: 'queen', color: 'black' },
-    'k': { name: 'king', color: 'black' },
-    'p': { name: 'pawn', color: 'black' }
-};
-
-export const fenChessCode: Record<string, string> = {
-    'rook-white': 'R',
-    'knight-white': 'N',
-    'bishop-white': 'B',
-    'queen-white': 'Q',
-    'king-white': 'K',
-    'pawn-white': 'P',
-
-    'rook-black': 'r',
-    'knight-black': 'n',
-    'bishop-black': 'b',
-    'queen-black': 'q',
-    'king-black': 'k',
-    'pawn-black': 'p'
-}; 
+export type fenChessPiecesType = Record<string, { name: PieceType, color: PieceColor }>
+export type fenChessCodeType = Record<string, string>
+export type piecePointsType = Record<PieceType, number>
 
 export declare class Chess {
     protected board: CellTypeMinimal[][]
@@ -126,8 +84,8 @@ export declare class Chess {
     protected postMoveTasks (piececolor:PieceColor):void; 
     isCheck(color: PieceColor, board: FrontendBoard): ChessSquare | null;
     isMate(color: PieceColor): boolean; 
-    updateResult(result: PieceColor | "-1" | null) 
-    getPieces(color: PieceColor, board: TypeofBoard)  
+    updateResult(result: PieceColor | "-1" | null):void
+    getPieces(color: PieceColor, board: TypeofBoard):ChessSquare[]  
     protected updateCastlingRights(color: PieceColor): void;
     protected createBoardRow(cols: string, row: number): CellTypeMinimal[]  
     getPieceMoves(square: ChessSquare, piece: Piece, board: FrontendBoard): ChessSquare[];

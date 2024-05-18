@@ -1,12 +1,12 @@
-import { parseNotation } from "./utils";
-import { CellTypeMinimal, ChessSquare, Piece, PieceColor,piecePoints, Moves, TypeofBoard,fenChessPieces,Board,fenChessCode,canCastleType } from "./chessTypes";
+import { fenChessCode, fenChessPieces, parseNotation, piecePoints } from "./utils";
+import { CellTypeMinimal, ChessSquare, Piece, PieceColor,Moves, TypeofBoard,Board,canCastleType } from "./chessTypes";
 import { chessPiecesMoves } from "./piecemoves";
 var Pieces = "RNBQKBNR";
 var colors: PieceColor[] = ["white", "black"];
 
 const initialboard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
 export class Chess {
-    protected board: CellTypeMinimal[][]
+    board: CellTypeMinimal[][]
     protected checked_king: ChessSquare | ""
     protected turn: PieceColor
     captured: Piece[]
