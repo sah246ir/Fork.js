@@ -1,6 +1,6 @@
 {
   "name": "chess-kit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "typescript based library for making chess based applications developement easier",
   "main": "dist/index.js",
   "files": [
