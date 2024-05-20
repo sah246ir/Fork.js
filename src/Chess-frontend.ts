@@ -52,7 +52,7 @@ export class ChessFrontend extends Chess {
         return
     } 
      
-    protected setSelected(notation: ChessSquare) {
+    setSelected(notation: ChessSquare) {
         if (this.color && this.color !== this.turn) return
         this.highlightMoves(notation,this.board)
         this.selected = notation
@@ -60,7 +60,7 @@ export class ChessFrontend extends Chess {
         this.board[i][j].highlight = true
         this.board[i][j].selected = true
     }
-    protected unsetSelected() {
+    unsetSelected() {
         if (!this.selected) return
         this.unhighlightMoves()
         const [i, j] = parseNotation(this.selected)
@@ -70,7 +70,7 @@ export class ChessFrontend extends Chess {
     }
 
      
-    protected highlightMoves = (notation: ChessSquare, board: CellType[][]) => {
+    highlightMoves = (notation: ChessSquare, board: CellType[][]) => {
         let [m,n] = parseNotation(notation)
         let cell:CellType = board[m][n]
         if (!this.selected) return
@@ -92,7 +92,7 @@ export class ChessFrontend extends Chess {
         })
         this.highlighted = moves 
     }
-    protected unhighlightMoves = () => {
+    unhighlightMoves = () => {
         this.highlighted.forEach((notation) => {
             let [mi, mj] = parseNotation(notation)
             this.board[mi][mj].highlight = false
