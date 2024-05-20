@@ -8,10 +8,10 @@ const initialboard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w"
 export class Chess {
     board: CellTypeMinimal[][]
     protected checked_king: ChessSquare | ""
-    protected turn: PieceColor
+    turn: PieceColor
     captured: Piece[]
     color: PieceColor | null
-    protected winner: PieceColor | "-1" | null
+    winner: PieceColor | "-1" | null
     protected cancastle: Record<PieceColor,canCastleType>
     constructor(fenstring?: string) {
         this.board = []
